@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenImageJS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <main class="container">
+        <header class="header">
+            <div class="app-title">
+                <div class="logo-container">
+                    <div class="logo">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-title-text">
+                <h1>GenImageJS</h1>
+            </div>
+            
+            <div class="theme-toggle-container">
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <section class="welcome-section">
+            <div class="welcome-content">
+                <h2 class="welcome-title">Transform Your Ideas Into Stunning Images</h2>
+                <p class="welcome-description">
+                    GenImageJS uses powerful AI models to turn your text descriptions into beautiful, creative visuals in seconds. Perfect for artists, designers, content creators, or anyone with imagination.
+                </p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <h3>Creative Freedom</h3>
+                        <p>Describe any scene, concept, or style you can imagine and bring it to life instantly.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-sliders"></i>
+                        </div>
+                        <h3>Multiple Models</h3>
+                        <p>Choose from several AI image generators, each with unique strengths and artistic styles.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="get-started-btn-container">
+                <button class="get-started-btn" id="get-started-btn">
+                    <i class="fa-solid fa-rocket"></i> Get Started
+                </button>
+            </div>
+        </section>
+
+        <div class="main-content" id="generator-section">
+            <form action="#" class="prompt-form">
+                <div class="prompt-container">
+                    <textarea class="prompt-input" placeholder="Describe your imagination" required autofocus></textarea>
+                    <button type="button" class="prompt-btn" aria-label="Random prompt">
+                        <i class="fa-solid fa-dice"></i>
+                    </button>
+                </div>
+
+                <div class="prompt-actions">
+                    <div class="select-wrapper model-select-container">
+                        <label for="model-select" class="visually-hidden">Select Model</label>
+                        <select class="custom-select" id="model-select" required>
+                            <option value="" selected disabled>Select Model</option>
+                            <option value="black-forest-labs/FLUX.1-dev" data-description="High-quality AI model for detailed image creation with great creative control.">FLUX.1-dev</option>
+                            <option value="black-forest-labs/FLUX.1-schnell" data-description="Faster version of FLUX with good quality and reduced generation time.">FLUX.1-schnell</option>
+                            <option value="stabilityai/stable-diffusion-xl-base-1.0" data-description="Powerful model with excellent color reproduction and composition skills.">Stable Diffusion XL</option>
+                            <option value="runwayml/stable-diffusion-v1-5" data-description="Classic SD model with balanced quality and speed, good for general use.">Stable Diffusion 1.5</option>
+                            <option value="prompthero/openjourney" data-description="Model specialized in artistic styles inspired by digital art techniques.">Openjourney</option>
+                            <option value="stabilityai/stable-diffusion-2-1" data-description="Improved version with better faces and details than SD 1.5.">Stable Diffusion 2.1</option>
+                            <option value="stabilityai/stable-diffusion-3-large" data-description="Latest generation with photorealistic results and superior composition.">Stable Diffusion 3</option>
+                            <option value="stabilityai/stable-diffusion-3-large-turbo" data-description="Fast version of SD3 with excellent quality and reduced generation time.">Stable Diffusion 3 Turbo</option>
+                        </select>
+                        <div class="model-tooltip" id="model-tooltip"></div>
+                        <div class="model-info-icon">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </div>
+                    </div>
+
+                    <div class="select-wrapper">
+                        <label for="count-select" class="visually-hidden">Image Count</label>
+                        <select class="custom-select" id="count-select" required>
+                            <option value="" selected disabled>Image Count</option>
+                            <option value="1">1 Image</option>
+                            <option value="2">2 Images</option>
+                            <option value="3">3 Images</option>
+                            <option value="4">4 Images</option>
+                        </select>
+                    </div>
+
+                    <div class="select-wrapper">
+                        <label for="ratio-select" class="visually-hidden">Aspect Ratio</label>
+                        <select class="custom-select" id="ratio-select" required>
+                            <option value="" selected disabled>Aspect Ratio</option>
+                            <option value="1/1">Square (1:1)</option>
+                            <option value="16/9">Landscape (16:9)</option>
+                            <option value="9/16">Portrait (9:16)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="generate-btn">
+                        <i class="fa-solid fa-wand-sparkles"></i> Generate
+                    </button>
+                </div>
+
+                <div class="gallery-grid" role="region" aria-label="Generated images"></div>
+            </form>
+        </div>
+
+        <div class="footer">
+            <p>GenImageJS © 2025 - 0xMR007</p>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

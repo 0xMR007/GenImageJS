@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const generatorSection = document.getElementById('generator-section');
     const modelTooltip = document.getElementById('model-tooltip');
     const modelInfoIcon = document.querySelector('.model-info-icon');
+    const backToHomeBtn = document.getElementById('back-to-home-btn');
 
     // API Configuration
     // Replace with your own valid HuggingFace API key
@@ -85,22 +86,48 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========================
     
     /**
-     * Handle transitions between welcome screen and generator section
+     * Handle transitions between welcome screen and generator section with improved animations
      */
     function initWelcomeNavigation() {
         if (getStartedBtn) {
             getStartedBtn.addEventListener('click', function() {
-                // Smooth transition
+                // Smooth transition out for welcome section
                 welcomeSection.style.opacity = '0';
-                welcomeSection.style.height = '0';
-                welcomeSection.style.margin = '0';
-                welcomeSection.style.overflow = 'hidden';
+                welcomeSection.style.transform = 'translateY(-20px)';
                 
+                // Timing sequence for smoother transition
                 setTimeout(() => {
-                    welcomeSection.style.display = 'none';
-                    generatorSection.style.opacity = '1';
-                    // Focus on the textarea for immediate input
-                    promptInput.focus();
+                    welcomeSection.style.height = '0';
+                    welcomeSection.style.margin = '0';
+                    welcomeSection.style.overflow = 'hidden';
+                    generatorSection.style.display = 'block';
+                    
+                    // Give very small delay for display:block to take effect
+                    setTimeout(() => {
+                        generatorSection.style.opacity = '1';
+                        generatorSection.style.transform = 'translateY(0)';
+                        
+                        // Stagger animations of form elements
+                        const formElements = [
+                            promptInput,
+                            ...document.querySelectorAll('.select-wrapper'),
+                            document.querySelector('.generate-btn')
+                        ];
+                        
+                        formElements.forEach((el, index) => {
+                            if (el) {
+                                setTimeout(() => {
+                                    el.style.opacity = '1';
+                                    el.style.transform = 'translateY(0)';
+                                }, index * 80);
+                            }
+                        });
+                        
+                        // Focus on the textarea for immediate input
+                        setTimeout(() => {
+                            promptInput.focus();
+                        }, 300);
+                    }, 50);
                 }, 300);
             });
         }
@@ -109,34 +136,101 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize welcome section navigation
     initWelcomeNavigation();
 
+    /**
+     * Handle transitions back to welcome screen with improved animations
+     */
+    function initBackToHome() {
+        if (backToHomeBtn) {
+            backToHomeBtn.addEventListener('click', function() {
+                // Fade out generator section
+                generatorSection.style.opacity = '0';
+                generatorSection.style.transform = 'translateY(20px)';
+                
+                // Reset form and clear gallery with animation
+                if (promptForm) {
+                    promptForm.reset();
+                }
+                
+                // Clear gallery with fade-out animation
+                if (gridGallery && gridGallery.children.length > 0) {
+                    const cards = gridGallery.querySelectorAll('.img-card');
+                    cards.forEach((card, index) => {
+                        setTimeout(() => {
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.9)';
+                        }, index * 50);
+                    });
+                    
+                    // Wait for fade-out to complete before clearing
+                    setTimeout(() => {
+                        gridGallery.innerHTML = '';
+                    }, cards.length * 50 + 150);
+                }
+                
+                // Delay showing welcome section
+                setTimeout(() => {
+                    // Hide generator completely
+                    generatorSection.style.display = 'none';
+                    
+                    // Prepare welcome section
+                    welcomeSection.style.display = 'block';
+                    welcomeSection.style.height = 'auto';
+                    welcomeSection.style.margin = '40px 0 50px';
+                    welcomeSection.style.overflow = 'visible';
+                    welcomeSection.style.transform = 'translateY(20px)';
+                    
+                    // Trigger reflow for animation to work
+                    welcomeSection.offsetHeight;
+                    
+                    // Animate in
+                    setTimeout(() => {
+                        welcomeSection.style.opacity = '1';
+                        welcomeSection.style.transform = 'translateY(0)';
+                    }, 50);
+                }, 350);
+            });
+        }
+    }
+    
+    // Same here but for the back to home button
+    initBackToHome();
+
     // ========================
     // Model Tooltips
     // ========================
     
     /**
-     * Initialize model description tooltips
+     * Initialize model description tooltips with improved animations
      */
     function initModelTooltips() {
         if (selectedModel && modelTooltip) {
-            // Show description on select change
+            // Show description on select change with smooth animation
             selectedModel.addEventListener('change', function() {
                 const selectedOption = selectedModel.options[selectedModel.selectedIndex];
                 const description = selectedOption.getAttribute('data-description');
                 
                 if (description) {
                     modelTooltip.textContent = description;
+                    modelTooltip.style.transform = 'translateY(5px)';
                     modelTooltip.classList.add('active');
                     
-                    // Auto-hide after 3 seconds
                     setTimeout(() => {
-                        modelTooltip.classList.remove('active');
+                        modelTooltip.style.transform = 'translateY(0)';
+                    }, 10);
+                    
+                    // Auto-hide with smooth fade out
+                    setTimeout(() => {
+                        modelTooltip.style.transform = 'translateY(-5px)';
+                        setTimeout(() => {
+                            modelTooltip.classList.remove('active');
+                        }, 200);
                     }, 3000);
                 } else {
                     modelTooltip.classList.remove('active');
                 }
             });
             
-            // Show description on info icon hover/click
+            // Show description on info icon hover/click with improved animations
             if (modelInfoIcon) {
                 modelInfoIcon.addEventListener('mouseenter', function() {
                     const selectedOption = selectedModel.options[selectedModel.selectedIndex];
@@ -144,14 +238,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     if (description && selectedOption.value !== "") {
                         modelTooltip.textContent = description;
+                        modelTooltip.style.transform = 'translateY(5px)';
                         modelTooltip.classList.add('active');
+                        
+                        setTimeout(() => {
+                            modelTooltip.style.transform = 'translateY(0)';
+                        }, 10);
                     }
                 });
                 
                 modelInfoIcon.addEventListener('mouseleave', function() {
                     setTimeout(() => {
-                        modelTooltip.classList.remove('active');
-                    }, 500);
+                        if (!modelTooltip.hasAttribute('data-locked')) {
+                            modelTooltip.style.transform = 'translateY(-5px)';
+                            setTimeout(() => {
+                                modelTooltip.classList.remove('active');
+                            }, 200);
+                        }
+                    }, 300);
                 });
                 
                 modelInfoIcon.addEventListener('click', function(e) {
@@ -163,13 +267,26 @@ document.addEventListener('DOMContentLoaded', function() {
                         modelTooltip.textContent = description;
                         
                         if (modelTooltip.classList.contains('active')) {
-                            modelTooltip.classList.remove('active');
+                            modelTooltip.removeAttribute('data-locked');
+                            modelTooltip.style.transform = 'translateY(-5px)';
+                            setTimeout(() => {
+                                modelTooltip.classList.remove('active');
+                            }, 200);
                         } else {
+                            modelTooltip.setAttribute('data-locked', 'true');
+                            modelTooltip.style.transform = 'translateY(5px)';
                             modelTooltip.classList.add('active');
+                            setTimeout(() => {
+                                modelTooltip.style.transform = 'translateY(0)';
+                            }, 10);
                             
                             // Auto-hide after clicking outside
                             document.addEventListener('click', function hideTooltip() {
-                                modelTooltip.classList.remove('active');
+                                modelTooltip.removeAttribute('data-locked');
+                                modelTooltip.style.transform = 'translateY(-5px)';
+                                setTimeout(() => {
+                                    modelTooltip.classList.remove('active');
+                                }, 200);
                                 document.removeEventListener('click', hideTooltip);
                             });
                         }
@@ -177,10 +294,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
             
-            // Hide tooltip when clicking elsewhere
+            // Hide tooltip with animation when clicking elsewhere
             document.addEventListener('click', function(e) {
                 if (!modelInfoIcon?.contains(e.target) && !selectedModel.contains(e.target)) {
-                    modelTooltip.classList.remove('active');
+                    if (modelTooltip.classList.contains('active')) {
+                        modelTooltip.removeAttribute('data-locked');
+                        modelTooltip.style.transform = 'translateY(-5px)';
+                        setTimeout(() => {
+                            modelTooltip.classList.remove('active');
+                        }, 200);
+                    }
                 }
             });
         }
@@ -194,12 +317,30 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========================
     
     /**
-     * Get a random prompt from the examples list
+     * Get a random prompt from the examples list with typing animation
      */
     function getRandomPrompt() {
         const prompt = examplePrompts[Math.floor(Math.random() * examplePrompts.length)];
-        promptInput.value = prompt;
-        promptInput.focus();
+        
+        // Clear existing text first
+        promptInput.value = '';
+        
+        let i = 0;
+        const typeInterval = setInterval(() => {
+            promptInput.value += prompt[i];
+            i++;
+            if (i >= prompt.length) {
+                clearInterval(typeInterval);
+                promptInput.focus();
+            }
+        }, 15);  // Speed of typing
+    }
+
+    // ========================
+    // Get Random Prompt Button
+    // ========================
+    if (promptButton) {
+        promptButton.addEventListener("click", getRandomPrompt);
     }
 
     /**
@@ -216,29 +357,32 @@ document.addEventListener('DOMContentLoaded', function() {
         let calculatedHeight = Math.round(height * scaleFactor);
 
         // Ensure width and height are multiples of 16 for API compatibility
-        calculatedWidth = Math.floor(calculatedWidth / 16) * 16;
-        calculatedHeight = Math.floor(calculatedHeight / 16) * 16;
-
-        return {width: calculatedWidth, height: calculatedHeight};
+        calculatedWidth = Math.ceil(calculatedWidth / 16) * 16;
+        calculatedHeight = Math.ceil(calculatedHeight / 16) * 16;
+        
+        return {
+            width: calculatedWidth,
+            height: calculatedHeight
+        };
     }
 
     /**
-     * Display error message in the image card
+     * Show error message on image card
      * @param {number} imgIndex - Index of the image card
      * @param {string} errorMessage - Error message to display
      */
     function showErrorMessage(imgIndex, errorMessage) {
-        const imgCard = document.getElementById(`img-card-${imgIndex}`);
-        
-        if (!imgCard) return;
-        
-        imgCard.classList.remove("loading");
-        imgCard.classList.add("error");
-        const statusContainer = imgCard.querySelector(".status-container");
-        if (statusContainer) {
-            const statusText = statusContainer.querySelector(".status-text");
-            if (statusText) {
-                statusText.textContent = `Error: ${errorMessage || "Failed to generate image"}`;
+        const imgCard = document.querySelector(`.img-card[data-index="${imgIndex}"]`);
+        if (imgCard) {
+            imgCard.classList.remove("loading");
+            imgCard.classList.add("error");
+            
+            const statusText = imgCard.querySelector(".status-text");
+            const statusIcon = imgCard.querySelector(".status-container i");
+            
+            if (statusText) statusText.textContent = errorMessage || "Failed to generate image";
+            if (statusIcon) {
+                statusIcon.className = "fa-solid fa-circle-exclamation";
             }
         }
     }
@@ -249,17 +393,128 @@ document.addEventListener('DOMContentLoaded', function() {
      * @param {string} imgUrl - URL of the generated image
      */
     function updateImageCard(imgIndex, imgUrl) {
-        const imgCard = document.getElementById(`img-card-${imgIndex}`);
+        const imgCard = document.querySelector(`.img-card[data-index="${imgIndex}"]`);
+        if (imgCard) {
+            // Create image element
+            const img = document.createElement("img");
+            img.className = "result-img";
+            img.src = imgUrl;
+            img.alt = "Generated image";
+            
+            // Remove loading state and append image with animation
+            imgCard.classList.remove("loading");
+            
+            img.style.opacity = '0';
+            imgCard.appendChild(img);
+            
+            // Create overlay with download button
+            const overlay = document.createElement("div");
+            overlay.className = "img-overlay";
+            overlay.style.opacity = '0';
+            
+            const downloadBtn = document.createElement("button");
+            downloadBtn.className = "img-download-btn";
+            downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i>';
+            downloadBtn.setAttribute("aria-label", "Download image");
+            downloadBtn.addEventListener("click", () => {
+                const a = document.createElement("a");
+                a.href = imgUrl;
+                a.download = `genimage-${Date.now()}.png`;
+                a.click();
+            });
+            
+            overlay.appendChild(downloadBtn);
+            imgCard.appendChild(overlay);
+            
+            // Trigger animation with slight delay
+            setTimeout(() => {
+                img.style.opacity = '1';
+                img.style.transform = 'scale(1)';
+                overlay.style.opacity = '1';
+            }, 50);
+        }
+    }
 
-        if (!imgCard) return;
-
-        imgCard.classList.remove("loading");
-        imgCard.innerHTML = `<img src="${imgUrl}" class="result-img" alt="Generated image">
-                        <div class="img-overlay">
-                            <a href="${imgUrl}" target="_blank" class="img-download-btn" download="${Date.now()}.png">
-                                <i class="fa-solid fa-download"></i>
-                            </a>
-                        </div>`;
+    /**
+     * Create image cards for the generation process with improved animations
+     * @param {string} model - Selected model ID
+     * @param {number} count - Number of images to generate
+     * @param {string} ratio - Selected aspect ratio
+     * @param {string} promptText - Text prompt for image generation
+     */
+    function createImageCards(model, count, ratio, promptText) {
+        // Clear gallery first with fade out animation
+        if (gridGallery.children.length > 0) {
+            const cards = gridGallery.querySelectorAll('.img-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.9)';
+                }, index * 50);
+            });
+            
+            // Wait for fade-out to complete before clearing
+            setTimeout(() => {
+                gridGallery.innerHTML = '';
+                addNewImageCards();
+            }, cards.length * 50 + 100);
+        } else {
+            addNewImageCards();
+        }
+        
+        // Function to add new image cards with staggered animation
+        function addNewImageCards() {
+            // Add new cards with staggered entrance
+            for (let i = 0; i < count; i++) {
+                const imgCard = document.createElement("div");
+                imgCard.className = "img-card loading";
+                imgCard.setAttribute("data-index", i);
+                
+                // Set aspect ratio based on selected ratio
+                const gridStyle = getComputedStyle(gridGallery);
+                const columnWidth = parseFloat(gridStyle.gridTemplateColumns.split(" ")[0]);
+                
+                if (ratio !== "1/1") {
+                    const [width, height] = ratio.split("/").map(Number);
+                    imgCard.style.aspectRatio = `${width}/${height}`;
+                }
+                
+                // Create status container for loading state
+                const statusContainer = document.createElement("div");
+                statusContainer.className = "status-container";
+                
+                const spinner = document.createElement("div");
+                spinner.className = "spinner";
+                
+                const icon = document.createElement("i");
+                icon.className = "fa-solid fa-spinner fa-spin";
+                
+                const statusText = document.createElement("div");
+                statusText.className = "status-text";
+                statusText.textContent = "Generating...";
+                
+                statusContainer.appendChild(spinner);
+                statusContainer.appendChild(icon);
+                statusContainer.appendChild(statusText);
+                imgCard.appendChild(statusContainer);
+                
+                // Set initial opacity for animation
+                imgCard.style.opacity = '0';
+                imgCard.style.transform = 'translateY(15px)';
+                
+                // Add to gallery
+                gridGallery.appendChild(imgCard);
+                
+                // Trigger entrance animation with staggered delay
+                setTimeout(() => {
+                    imgCard.style.opacity = '1';
+                    imgCard.style.transform = 'translateY(0)';
+                }, i * 80);
+            }
+            
+            // Start API calls after cards are created
+            generateImages(model, count, ratio, promptText);
+        }
     }
 
     /**
@@ -316,51 +571,29 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * Create placeholder image cards in loading state
-     * @param {string} model - Selected AI model
-     * @param {number} count - Number of images to generate
-     * @param {string} ratio - Aspect ratio
-     * @param {string} promptText - Text description for image generation
-     */
-    function createImageCards(model, count, ratio, promptText) {
-        gridGallery.innerHTML = "";
-
-        for (let i = 0; i < count; i++) {
-            gridGallery.innerHTML += `<div class="img-card loading" id="img-card-${i}" style="aspect-ratio: ${ratio}">
-                                        <div class="status-container">
-                                            <div class="spinner"></div>
-                                            <i class="fa-solid fa-triangle-exclamation"></i>
-                                            <p class="status-text">Generating...</p>
-                                        </div>
-                                    </div>`;
-        }
-        generateImages(model, count, ratio, promptText);
-    }
-
-    /**
      * Handle form submission
      * @param {Event} e - Form submit event
      */
     function handleFormSubmit(e) {
         e.preventDefault();
-
+        
         const model = selectedModel.value;
-        const count = parseInt(selectedCount.value) || 1;
-        const ratio = selectedRatio.value || "1/1";
+        const count = parseInt(selectedCount.value, 10);
+        const ratio = selectedRatio.value;
         const promptText = promptInput.value.trim();
-
+        
         if (!model || !count || !ratio || !promptText) {
-            alert('Please fill in all fields');
+            // Show error notification if fields are missing
+            alert("Please fill in all required fields.");
             return;
         }
-
-        console.log("Form submitted with:", { model, count, ratio, promptText });
+        
+        // Create image cards and start generation
         createImageCards(model, count, ratio, promptText);
     }
 
-    // Apply event listeners for image generation
-    if (promptButton && promptInput && promptForm) {
-        promptButton.addEventListener("click", getRandomPrompt);
+    // Add form submission handler
+    if (promptForm) {
         promptForm.addEventListener("submit", handleFormSubmit);
     }
 });

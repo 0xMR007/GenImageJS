@@ -2,9 +2,9 @@
 
 An elegant web interface for generating images using advanced AI models.
 
-<p align="center">
-  <img width="900" src="./assets/GenImageJS.png" alt="GenImageJS Interface">
-</p>
+<img width="400" src="./assets/GenImageJS-home.png" alt="GenImageJS Home">
+<img width="400" src="./assets/GenImageJS-prompt.png" alt="GenImageJS Prompt">
+<img width="400" src="./assets/GenImageJS-preview.png" alt="GenImageJS Preview">
 
 ## 🌟 Features
 

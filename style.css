@@ -115,6 +115,7 @@ body.dark-theme .container {
     margin-bottom: 25px;
     position: relative;
     padding: 10px 25px;
+    width: 100%;
 }
 
 .header-actions {
@@ -155,6 +156,9 @@ body.dark-theme .container {
     align-items: center;
     gap: 20px;
     transition: var(--transition-bounce);
+    position: relative;
+    left: 0;
+    right: 0;
 }
 
 .app-title:hover h1 {
@@ -211,7 +215,6 @@ body.dark-theme .container {
                gradient-shift 1.5s ease infinite;
     transform-style: preserve-3d;
     transition: transform 0.5s ease-out;
-    margin-left: 25px;
 }
 
 .header h1::before {
@@ -478,6 +481,7 @@ body.dark-theme .container {
 
 .prompt-container .prompt-input {
     flex: 1;
+    width: 100%;
     height: 100px;
     background-color: var(--color-input);
     border: 1px solid var(--color-border);
@@ -489,6 +493,7 @@ body.dark-theme .container {
     transition: var(--transition-fast);
     transform-origin: top left;
     animation: slide-up 0.4s ease-out forwards;
+    box-sizing: border-box;
 }
 
 @keyframes slide-up {
@@ -878,89 +883,153 @@ body.dark-theme .container {
         flex-direction: column;
         padding: 10px 0;
         margin-bottom: 15px;
+        position: relative;
+    }
+
+    .header-actions {
+        margin-top: 20px;
     }
     
     .app-title {
         justify-content: center;
         margin-bottom: 10px;
+        width: 100%;
+        padding: 0 20px;
     }
     
     .logo-container {
         margin-right: 0;
     }
     
-    .app-title-text {
-        text-align: center;
+    .gallery-grid .img-card {
+        aspect-ratio: 1;
     }
     
-    .theme-toggle-container {
-        position: absolute;
-        top: 20px;
-        right: 20px;
+    .gallery-grid .img-card .img-download-btn {
+        height: 42px;
+        width: 42px;
     }
     
-    .welcome-section {
-        margin: 25px 0 35px;
+    .gallery-grid .img-card .status-container {
+        padding: 12px;
+    }
+    
+    .gallery-grid .img-card .status-text {
+        font-size: 0.85rem;
+    }
+    
+    .footer {
+        margin-top: 25px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 660px) {
+    .container {
+        padding: 20px 15px;
+        margin: 12px;
+    }
+    
+    .header {
+        padding: 8px 0;
+        margin-bottom: 12px;
+    }
+    
+    .app-title {
+        padding: 0 15px;
+    }
+    
+    .header .logo {
+        height: 55px;
+        width: 55px;
+        font-size: 1.5rem;
+    }
+    
+    .header h1 {
+        font-size: 2.2rem;
     }
     
     .welcome-title {
         font-size: 1.8rem;
-        margin-bottom: 20px;
+        margin-bottom: 18px;
     }
     
     .welcome-description {
-        font-size: 1rem;
-        margin-bottom: 30px;
+        font-size: 0.95rem;
+        margin-bottom: 28px;
+        padding: 0 10px;
     }
     
     .features-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
+        gap: 12px;
+        padding: 0 8px;
     }
     
     .feature-card {
-        padding: 20px 15px;
+        padding: 18px 15px;
     }
     
     .feature-icon {
-        height: 60px;
-        width: 60px;
-        font-size: 1.4rem;
+        height: 55px;
+        width: 55px;
+        font-size: 1.3rem;
         margin-bottom: 15px;
     }
     
     .feature-card h3 {
-        font-size: 1.2rem;
-        margin-bottom: 10px;
+        font-size: 1.15rem;
+        margin-bottom: 8px;
+    }
+    
+    .feature-card p {
+        font-size: 0.9rem;
     }
     
     .get-started-btn {
-        padding: 14px 25px;
+        padding: 13px 25px;
+        font-size: 1rem;
     }
     
     .prompt-container .prompt-input {
-        min-height: 100px;
-        padding: 15px;
-        font-size: 1rem;
+        min-height: 95px;
+        padding: 13px;
+        font-size: 0.95rem;
     }
     
     .main-content .prompt-actions {
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
-    }
-    
-    .prompt-actions .generate-btn {
-        grid-column: span 2;
+        padding: 0 8px;
     }
     
     .prompt-actions :where(.custom-select, .generate-btn) {
         padding: 12px 15px;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
     }
     
     .main-content .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0 8px;
+    }
+    
+    .gallery-grid .img-card .img-download-btn {
+        height: 40px;
+        width: 40px;
+    }
+    
+    .gallery-grid .img-card .status-container {
+        padding: 12px;
+    }
+    
+    .gallery-grid .img-card .status-text {
+        font-size: 0.85rem;
+    }
+    
+    .footer {
+        margin-top: 22px;
+        font-size: 0.85rem;
     }
 }
 
@@ -978,24 +1047,27 @@ body.dark-theme .container {
         padding: 5px 0;
     }
     
+    .header-actions {
+        top: 15px;
+        right: 15px;
+        gap: 8px;
+    }
+    
     .header .logo {
         height: 45px;
         width: 45px;
         font-size: 1.2rem;
     }
     
-    .app-title-text h1 {
-        font-size: 1.8rem;
-    }
-    
-    .theme-toggle-container {
-        top: 15px;
-        right: 15px;
-    }
-    
+    .back-home-btn,
     .header .theme-toggle {
         height: 38px;
         width: 38px;
+        font-size: 1rem;
+    }
+    
+    .app-title-text h1 {
+        font-size: 1.8rem;
     }
     
     .welcome-title {
@@ -1006,30 +1078,52 @@ body.dark-theme .container {
     .welcome-description {
         font-size: 0.9rem;
         margin-bottom: 25px;
+        padding: 0 5px;
     }
     
     .features-grid {
         grid-template-columns: 1fr;
         gap: 12px;
+        padding: 0 5px;
     }
     
     .feature-card {
         padding: 18px 12px;
     }
     
+    .feature-icon {
+        height: 50px;
+        width: 50px;
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+    
+    .feature-card p {
+        font-size: 0.9rem;
+    }
+    
     .get-started-btn {
-        width: 100%;
         padding: 12px 20px;
+        font-size: 0.95rem;
     }
     
     .prompt-container .prompt-input {
         min-height: 90px;
         padding: 12px;
+        font-size: 0.95rem;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .main-content .prompt-actions {
         grid-template-columns: 1fr;
         gap: 10px;
+        padding: 0 5px;
     }
     
     .prompt-actions .generate-btn {
@@ -1039,6 +1133,7 @@ body.dark-theme .container {
     .main-content .gallery-grid {
         grid-template-columns: 1fr;
         gap: 15px;
+        padding: 0 5px;
     }
     
     .gallery-grid .img-card {
@@ -1047,27 +1142,41 @@ body.dark-theme .container {
         max-width: 300px;
     }
     
-    .model-tooltip {
-        max-width: 100%;
-        left: 0;
-        right: 0;
+    .gallery-grid .img-card .img-download-btn {
+        height: 38px;
+        width: 38px;
     }
     
-    .prompt-actions .custom-select, 
-    .prompt-actions .generate-btn {
-        height: 45px;
+    .gallery-grid .img-card .status-container {
+        padding: 10px;
+    }
+    
+    .gallery-grid .img-card .status-text {
+        font-size: 0.8rem;
     }
     
     .footer {
         margin-top: 20px;
-        padding-bottom: 10px;
+        font-size: 0.8rem;
     }
 }
 
-/* Ajustements pour très petits écrans */
 @media (max-width: 320px) {
     .container {
         padding: 12px 8px;
+    }
+    
+    .header-actions {
+        top: 12px;
+        right: 12px;
+        gap: 6px;
+    }
+    
+    .back-home-btn,
+    .header .theme-toggle {
+        height: 34px;
+        width: 34px;
+        font-size: 0.9rem;
     }
     
     .header .logo {
@@ -1076,72 +1185,147 @@ body.dark-theme .container {
         font-size: 1rem;
     }
     
-    .app-title-text h1 {
-        font-size: 1.5rem;
-    }
-    
     .welcome-title {
         font-size: 1.3rem;
+        margin-bottom: 12px;
     }
     
     .welcome-description {
         font-size: 0.85rem;
+        margin-bottom: 20px;
+    }
+    
+    .feature-card {
+        padding: 15px 10px;
+    }
+    
+    .feature-icon {
+        height: 45px;
+        width: 45px;
+        font-size: 1.1rem;
+        margin-bottom: 10px;
     }
     
     .feature-card h3 {
-        font-size: 1.1rem;
+        font-size: 1rem;
+        margin-bottom: 6px;
     }
     
     .feature-card p {
         font-size: 0.85rem;
     }
-}
-
-@media (min-width: 481px) and (max-width: 767px) {
-    .main-content .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
+    
+    .get-started-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
     }
     
-    .prompt-actions .generate-btn {
-        grid-column: span 2;
+    .prompt-container .prompt-input {
+        min-height: 80px;
+        padding: 10px;
+        font-size: 0.9rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .prompt-actions :where(.custom-select, .generate-btn) {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    
+    .gallery-grid .img-card .img-download-btn {
+        height: 34px;
+        width: 34px;
+    }
+    
+    .gallery-grid .img-card .status-container {
+        padding: 8px;
+    }
+    
+    .gallery-grid .img-card .status-text {
+        font-size: 0.75rem;
+    }
+    
+    .footer {
+        margin-top: 15px;
+        font-size: 0.75rem;
     }
 }
 
+/* Ajustements pour les écrans en mode paysage sur mobile */
 @media (max-height: 500px) and (orientation: landscape) {
+    .container {
+        padding: 15px;
+    }
+    
     .header {
         flex-direction: row;
         padding: 5px 15px;
+        margin-bottom: 10px;
     }
     
-    .theme-toggle-container {
+    .header-actions {
         position: relative;
         top: auto;
         right: auto;
     }
     
     .welcome-section {
-        margin: 15px 0 25px;
+        margin: 10px 0 20px;
+    }
+    
+    .welcome-title {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+    
+    .welcome-description {
+        margin-bottom: 15px;
     }
     
     .features-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
-}
-
-.app-title {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: nowrap;
-}
-
-.app-title-text {
-    min-width: 0;
-}
-
-.prompt-container .prompt-input {
-    width: 100%;
-    box-sizing: border-box;
+    
+    .feature-card {
+        padding: 15px;
+    }
+    
+    .feature-icon {
+        height: 45px;
+        width: 45px;
+        margin-bottom: 10px;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+    
+    .feature-card p {
+        font-size: 0.85rem;
+    }
+    
+    .get-started-btn {
+        padding: 10px 20px;
+    }
+    
+    .prompt-container .prompt-input {
+        min-height: 80px;
+    }
+    
+    .main-content .prompt-actions {
+        gap: 8px;
+    }
+    
+    .prompt-actions :where(.custom-select, .generate-btn) {
+        padding: 10px 15px;
+    }
+    
+    .gallery-grid .img-card {
+        aspect-ratio: 1;
+    }
 }
 
 /* Amélioration de l'accessibilité sur mobile */
@@ -1150,7 +1334,8 @@ body.dark-theme .container {
     .prompt-actions .generate-btn:hover,
     .feature-card:hover,
     .prompt-container .prompt-btn:hover,
-    .header .theme-toggle:hover {
+    .header .theme-toggle:hover,
+    .back-home-btn:hover {
         transform: none;
         box-shadow: var(--shadow-md);
     }
@@ -1159,7 +1344,8 @@ body.dark-theme .container {
     .prompt-actions .generate-btn:active,
     .feature-card:active,
     .prompt-container .prompt-btn:active,
-    .header .theme-toggle:active {
+    .header .theme-toggle:active,
+    .back-home-btn:active {
         transform: scale(0.95);
     }
 }
